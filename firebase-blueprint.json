@@ -1,0 +1,129 @@
+{
+  "entities": {
+    "ChatSession": {
+      "title": "ChatSession",
+      "description": "Represents a conversational thread created by a user.",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "The unique identifier of the chat session."
+        },
+        "title": {
+          "type": "string",
+          "description": "The title or topic of the conversation."
+        },
+        "userId": {
+          "type": "string",
+          "description": "The ID of the user who owns this session."
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "The creation timestamp."
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "The last interaction timestamp."
+        }
+      },
+      "required": ["id", "title", "userId", "createdAt", "updatedAt"]
+    },
+    "Message": {
+      "title": "Message",
+      "description": "An individual message within a ChatSession conversation.",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "The unique identifier of the message."
+        },
+        "role": {
+          "type": "string",
+          "enum": ["user", "model"],
+          "description": "The author of the message: either the user or the model."
+        },
+        "content": {
+          "type": "string",
+          "description": "The text content of the message."
+        },
+        "modelUsed": {
+          "type": "string",
+          "description": "The model that generated the response, populated only when role is 'model'."
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "The message creation timestamp."
+        }
+      },
+      "required": ["id", "role", "content", "createdAt"]
+    },
+    "Personalization": {
+      "title": "Personalization",
+      "description": "User-specific settings indicating preferred AI tone and custom instructions.",
+      "type": "object",
+      "properties": {
+        "aiTone": {
+          "type": "string",
+          "description": "The selected AI tone of voice."
+        },
+        "customPersonality": {
+          "type": "string",
+          "description": "Custom personality instructions given to the AI."
+        },
+        "userProfile": {
+          "type": "string",
+          "description": "A brief summary of what the AI should know about the user."
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "The modified timestamp."
+        }
+      },
+      "required": ["aiTone", "customPersonality", "userProfile", "updatedAt"]
+    }
+    "UsageLog": {
+      "title": "UsageLog",
+      "description": "Log entry for rate limiting tracking (Thinking and MAX modes).",
+      "type": "object",
+      "properties": {
+        "mode": {
+          "type": "string",
+          "enum": [
+            "thinking",
+            "max"
+          ]
+        },
+        "timestamp": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "mode",
+        "timestamp"
+      ]
+    }
+  },
+  "firestore": {
+    "/sessions/{sessionId}": {
+      "schema": "ChatSession",
+      "description": "List of active chat sessions created by authentication users."
+    },
+    "/sessions/{sessionId}/messages/{messageId}": {
+      "schema": "Message",
+      "description": "Historically ordered message entries belonging to a specific chat session."
+    },
+    "/users/{userId}/settings/{settingId}": {
+      "schema": "Personalization",
+      "description": "Individually customized personalization settings for the user."
+    },
+    "/users/{userId}/usage_logs/{logId}": {
+      "schema": "UsageLog",
+      "description": "Rate limit usage logs for specific high-compute modes."
+    }
+  }
+}

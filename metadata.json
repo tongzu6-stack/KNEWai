@@ -1,0 +1,6 @@
+{
+  "name": "knew-ai",
+  "description": "A beautifully simple, elegant AI chat client using OpenRouter and Firestore.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
