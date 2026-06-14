@@ -11,5 +11,17 @@ export default defineConfig(() => {
         '@': path.resolve(__dirname, '.'),
       },
     },
+    build: {
+      rollupOptions: {
+        output: {
+          manualChunks: {
+            'react-vendor': ['react', 'react-dom'],
+            'markdown': ['react-markdown', 'remark-gfm'],
+            'motion': ['motion/react'],
+            'icons': ['lucide-react'],
+          }
+        }
+      }
+    }
   };
 });
